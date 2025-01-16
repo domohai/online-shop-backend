@@ -12,24 +12,27 @@ import java.util.List;
 public class Cart {
     @Id
     private ObjectId _id;
-    private String userId;
+    private String userEmail;
     @DocumentReference
     private List<Product> products;
     private int quantity;
     private double totalPrice;
     
-    public Cart(String userId, List<Product> products, int quantity, double totalPrice) {
-        this.userId = userId;
+    public Cart(String userEmail, List<Product> products, int quantity, double totalPrice) {
+        this.userEmail = userEmail;
         this.products = products;
         this.quantity = quantity;
         this.totalPrice = totalPrice;
     }
     
-    public Cart(String userId) {
-        this.userId = userId;
+    public Cart(String userEmail) {
+        this.userEmail = userEmail;
         this.products = new ArrayList<>();
         this.quantity = 0;
         this.totalPrice = 0;
+    }
+    
+    public Cart() {
     }
     
     public void addProduct(Product product) {
@@ -40,10 +43,15 @@ public class Cart {
     
     @Override
     public String toString() {
+        StringBuilder productsString = new StringBuilder("[");
+        for (Product product : products) {
+            productsString.append(product.toString()).append(", ");
+        }
+        productsString.append("]");
         return "Cart{" +
                 "_id=" + _id +
-                ", userId='" + userId + '\'' +
-                ", products=" + products +
+                ", userEmail='" + userEmail + '\'' +
+                ", products=" + productsString +
                 ", quantity=" + quantity +
                 ", totalPrice=" + totalPrice +
                 '}';
@@ -57,12 +65,12 @@ public class Cart {
         this._id = _id;
     }
     
-    public String getUserId() {
-        return userId;
+    public String getUserEmail() {
+        return userEmail;
     }
     
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
     
     public List<Product> getProducts() {

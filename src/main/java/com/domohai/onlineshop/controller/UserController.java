@@ -1,8 +1,8 @@
 package com.domohai.onlineshop.controller;
 
 import com.domohai.onlineshop.model.User;
+import com.domohai.onlineshop.service.CartService;
 import com.domohai.onlineshop.service.UserService;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,25 +20,28 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-    private final UserService userService;
-    
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private UserService userService;
+    @Autowired
+    private CartService cartService;
     
     @GetMapping("")
     public ResponseEntity<List<User>> getAllUsers() {
-        return new ResponseEntity<List<User>>(userService.getAllUsers(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
     
     @GetMapping("/{email}")
     public ResponseEntity<Optional<User>> getUserByEmail(@PathVariable String email) {
-        return new ResponseEntity<Optional<User>>(userService.getUserByEmail(email), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.OK);
     }
     
     @PostMapping("")
     public ResponseEntity<User> createUser(@RequestBody Map<String, String> body) {
-        return null;
+        String name = body.get("name");
+        String email = body.get("email");
+        String password = body.get("password");
+        String role = body.get("role");
+        User user = new User(name, email, password, role, cartService.createCart(email));
+        return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
     }
 }

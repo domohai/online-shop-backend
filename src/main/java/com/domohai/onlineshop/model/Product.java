@@ -22,6 +22,15 @@ public class Product {
         this.category = category;
     }
     
+    public Product() {
+        this._id = null;
+        this.name = null;
+        this.description = null;
+        this.price = 0.0;
+        this.imageUrl = null;
+        this.category = null;
+    }
+    
     @Override
     public String toString() {
         return "Product{" +

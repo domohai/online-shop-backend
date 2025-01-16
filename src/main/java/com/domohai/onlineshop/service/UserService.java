@@ -14,8 +14,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     
-    public User createUser(String id, String name, String email, String password, String role) {
-        return null;
+    public User createUser(User user) {
+        return userRepository.insert(user);
     }
     
     public List<User> getAllUsers() {
@@ -26,11 +26,7 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
     
-    public User updateUser(String id, User user) {
-        return userRepository.save(user);
-    }
-    
-    public void deleteUser(ObjectId id) {
-        userRepository.deleteById(id);
+    public void deleteUserByEmail(String email) {
+        userRepository.deleteByEmail(email);
     }
 }

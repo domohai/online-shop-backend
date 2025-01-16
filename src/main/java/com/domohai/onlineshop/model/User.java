@@ -16,11 +16,12 @@ public class User {
     @DocumentReference
     private Cart cart;
     
-    public User(String name, String email, String password, String role) {
+    public User(String name, String email, String password, String role, Cart cart) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.cart = cart;
     }
     
     @Override
@@ -31,7 +32,16 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
+                ", cart=" + cart.toString() +
                 '}';
+    }
+    
+    public Cart getCart() {
+        return cart;
+    }
+    
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
     
     public ObjectId get_id() {

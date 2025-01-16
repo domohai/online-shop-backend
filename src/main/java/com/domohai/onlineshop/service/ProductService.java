@@ -2,6 +2,7 @@ package com.domohai.onlineshop.service;
 
 import com.domohai.onlineshop.model.Product;
 import com.domohai.onlineshop.repository.ProductRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +17,8 @@ public class ProductService {
         return productRepository.findAll();
     }
     
-    public Product addProduct(String name, String description, double price, String imageUrl, String category) {
-        Product product = new Product(name, description, price, imageUrl, category);
-        return productRepository.insert(product);
+    public Product getProductById(ObjectId id) {
+        return productRepository.findById(id).orElse(null);
     }
     
     public Product addProduct(Product product) {

@@ -27,12 +27,6 @@ public class ProductController {
     
     @PostMapping("")
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
-//        String name = body.get("name");
-//        String description = body.get("description");
-//        double price = Double.parseDouble(body.get("price"));
-//        String imageUrl = body.get("imageUrl");
-//        String category = body.get("category");
-//        return new ResponseEntity<>(productService.addProduct(name, description, price, imageUrl, category), HttpStatus.OK);
         return new ResponseEntity<>(productService.addProduct(product), HttpStatus.OK);
     }
 }
