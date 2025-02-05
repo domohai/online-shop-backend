@@ -32,6 +32,12 @@ public class Product {
     }
     
     @Override
+    public boolean equals(Object object) {
+        Product product = (Product) object;
+        return this._id.equals(product.get_id());
+    }
+    
+    @Override
     public String toString() {
         return "Product{" +
                 "_id=" + _id +

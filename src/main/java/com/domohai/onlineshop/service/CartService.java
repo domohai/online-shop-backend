@@ -23,11 +23,36 @@ public class CartService {
     }
     
     public Cart addToCart(String userEmail, Product product) {
+        // Check if product is already in cart
+        Cart cart = cartRepository.findByUserEmail(userEmail);
+        Query query = new Query(Criteria.where("userEmail").is(userEmail));
+        Update update;
+        if (cart.getProducts().contains(product)) {
+            update = new Update()
+                    .inc("totalPrice", product.getPrice())
+                    .inc("quantity", 1);
+        } else {
+            update = new Update()
+                    .push("products", product)
+                    .inc("totalPrice", product.getPrice())
+                    .inc("quantity", 1);
+        }
+        mongoTemplate.updateFirst(query, update, Cart.class);
+        return cartRepository.findByUserEmail(userEmail);
+    }
+    
+    public Cart removeFromCart(String userEmail, Product product) {
+        // Check if product is in cart
+        Cart cart = cartRepository.findByUserEmail(userEmail);
+        if (!cart.getProducts().contains(product)) {
+            throw new IllegalArgumentException("Product not found in cart");
+        }
+        
         Query query = new Query(Criteria.where("userEmail").is(userEmail));
         Update update = new Update()
-                .push("products", product)
-                .inc("totalPrice", product.getPrice())
-                .inc("quantity", 1);
+                .pull("products", product)
+                .inc("totalPrice", -product.getPrice())
+                .inc("quantity", -1);
         mongoTemplate.updateFirst(query, update, Cart.class);
         return cartRepository.findByUserEmail(userEmail);
     }
